@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">VK-project</string>
+    <string name="toolbar">Toolbar</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.kadico.vk_project.ui.theme
+package com.kadico.vk_project.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
