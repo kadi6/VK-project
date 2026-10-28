@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.google.devtools.ksp)
 }
 
 android {
@@ -10,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.kadico.vk_project"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -28,32 +31,89 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
+    //    compileOptions {
+    //        sourceCompatibility = JavaVersion.VERSION_11
+    //        targetCompatibility = JavaVersion.VERSION_11
+    //    }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
     }
+    hilt {
+        enableAggregatingTask = false
+    }
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
 }
+
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Подключаем feature-модуль
+    implementation(project(":details"))
+
+
+    // --- Базовые библиотеки Android и Kotlin ---
+    implementation(libs.androidx.core.ktx)                                                              // Расширения Kotlin для Android Core
+    implementation(libs.androidx.lifecycle.runtime.ktx)                                                 // Работа с жизненным циклом (Lifecycle)
+    implementation(libs.kotlinx.serialization.json)                                                     // Сериализация JSON
+
+
+    // --- Jetpack Compose (Интерфейс) ---
+    implementation(platform(libs.androidx.compose.bom))                                                 // Управление версиями Compose через BOM
+    implementation(libs.androidx.activity.compose)                                                      // Интеграция Activity с Compose
+    implementation(libs.androidx.ui)                                                                    // Основные компоненты UI Compose
+    implementation(libs.androidx.ui.graphics)                                                           // Инструменты отрисовки и графики
+    implementation(libs.androidx.ui.tooling.preview)                                                    // Поддержка Preview в Android Studio
+    implementation(libs.androidx.material3)                                                             // Компоненты Material Design 3
+    implementation(libs.androidx.lifecycle.viewmodel.compose)                                           // Интеграция ViewModel с Compose
+
+
+    // --- Загрузка изображений (Coil) ---
+    implementation(libs.coil.compose)                                                                   // Поддержка Coil для Compose
+    implementation(libs.coil.network.okhttp)                                                            // Сетевой движок OkHttp для Coil
+
+
+    // --- Сеть (Retrofit & OkHttp) ---
+    implementation(libs.okhttp)                                                                         // HTTP-клиент
+    implementation(libs.retrofit)                                                                       // Библиотека для работы с REST API
+    implementation(libs.retrofit.converter.kotlinx.serialization)                                       // Конвертер JSON для Retrofit
+
+
+    // --- Внедрение зависимостей (Dagger Hilt) ---
+    implementation(libs.hilt.android)                                                                   // Основная библиотека Hilt
+    implementation(libs.hilt.navigation.compose)                                                        // Интеграция Hilt с навигацией Compose
+    ksp(libs.hilt.compiler)                                                                             // Кодогенератор Hilt (требует плагин kapt)
+
+
+    // --- Локальная база данных (Room) ---
+    implementation(libs.room.runtime)                                                                   // Основной рантайм Room
+    implementation(libs.room.ktx)                                                                       // Поддержка Coroutines для Room
+    ksp(libs.room.compiler)                                                                             // Кодогенератор Room (требует плагин kapt)
+
+
+    // --- Навигация ---
+    implementation(libs.androidx.navigation.compose)
+
+
+    // --- Тестирование (Unit & UI) ---
+    testImplementation(libs.junit)                                                                       // Юнит-тесты
+    androidTestImplementation(libs.androidx.junit)                                                       // Android-тесты
+    androidTestImplementation(libs.androidx.espresso.core)                                               // Тестирование взаимодействий (Espresso)
+    androidTestImplementation(platform(libs.androidx.compose.bom))                                       // BOM для тестов
+    androidTestImplementation(libs.androidx.ui.test.junit4)                                              // Тестирование Compose
+
+
+    // --- Отладка (Debug) ---
+    debugImplementation(libs.androidx.ui.tooling)                                                        // Инструменты инспекции UI
+    debugImplementation(libs.androidx.ui.test.manifest)                                                  // Манифест для тестов Compose
+
+
 }

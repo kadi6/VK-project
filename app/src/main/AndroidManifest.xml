@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" >
 
+    <!-- Объявляем функционал приложения -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".full.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -10,9 +14,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.VKproject" >
+        android:theme="@style/Theme.VKproject"
+        android:usesCleartextTraffic="true">
         <activity
-            android:name=".presentation.appdetails.MainActivity"
+            android:name=".full.presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.VKproject" >
