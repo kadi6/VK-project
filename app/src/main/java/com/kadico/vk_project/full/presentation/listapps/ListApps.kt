@@ -1,4 +1,4 @@
-package com.kadico.vk_project.full.presentation.appdetails
+package com.kadico.vk_project.full.presentation.listapps
 
 
 import androidx.compose.foundation.background
@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kadico.vk_project.R
+import com.kadico.vk_project.full.data.AppInfo
 import com.kadico.vk_project.full.data.listApps
 import com.kadico.vk_project.full.presentation.theme.VKprojectTheme
 import kotlinx.coroutines.CoroutineScope
@@ -45,6 +46,9 @@ import kotlinx.coroutines.launch
 
 
 
+    /*
+        Composition Root
+    */
 
 
 
@@ -52,10 +56,11 @@ import kotlinx.coroutines.launch
 
 
 
-// Stateful
+
+// Stateful composable
 @Composable
 fun ListApps(
-    onAppClick: () -> Unit
+    onAppClick: () -> Unit,
 ) {
 
     // Создаем состояние для Snackbar и область для запуска корутин
@@ -71,6 +76,10 @@ fun ListApps(
 }
 
 
+
+
+
+
 // Stateless composable
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,7 +87,7 @@ fun ListApps(
     snackbarHostState: SnackbarHostState,
     scope: CoroutineScope,
     onAppClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
         modifier = modifier,
@@ -134,60 +143,81 @@ fun ListApps(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
+            // items(listApps) перебирает элементы коллекции и предоставляет очередной item. Внутри лямбды ты описываешь, как отобразить этот item
             items(listApps) { item ->
 
-                Column(
-                    modifier = Modifier
-                        .background(color = Color(0xFFEDF2F8))
-                        .clickable {
-                            onAppClick()
-                        }
-
-                    ) {
-
-                    Column(
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                        horizontalAlignment = Alignment.Start
-                    ) {
-
-                        Icon(
-                            imageVector = item.iconApp,
-                            contentDescription = null,
-                            modifier = Modifier.size(48.dp),
-                            tint = MaterialTheme.colorScheme.secondary
-                        )
-
-
-                        Text(text = item.titleApp, style = MaterialTheme.typography.titleMedium)
-                        Text(
-                            text = item.categoryApp,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            text = item.descriptionApp,
-                            style = MaterialTheme.typography.bodySmall,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-
-
-                        // Полоса-разделитель
-                        HorizontalDivider(
-                            modifier = Modifier.padding(top = 16.dp),
-                            thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.outlineVariant
-                        )
-                    }
-
-                }
+                AppItem(
+                    item = item,
+                    onAppClick = { onAppClick() }
+                )
 
             }
 
         }
     }
 }
+
+
+
+
+
+
+// Создаем переиспользуемую вёрстку для одного элемента приложения
+@Composable
+fun AppItem(
+    item: AppInfo,
+    onAppClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .background(color = Color(0xFFEDF2F8))
+    ) {
+
+        Column(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+                .clickable {
+                    onAppClick()
+                },
+            horizontalAlignment = Alignment.Start,
+            ) {
+
+            Icon(
+                imageVector = item.iconApp,
+                contentDescription = null,
+                modifier = Modifier.size(48.dp),
+                tint = MaterialTheme.colorScheme.secondary
+            )
+
+
+            Text(text = item.titleApp, style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = item.categoryApp,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.secondary
+            )
+            Text(
+                text = item.descriptionApp,
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+
+
+            // Полоса-разделитель
+            HorizontalDivider(
+                modifier = Modifier.padding(top = 16.dp),
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant
+            )
+        }
+
+    }
+}
+
+
+
+
 
 
 @Preview

@@ -56,7 +56,8 @@ android {
 dependencies {
 
 
-    // Подключаем feature-модуль
+    // Подключаем модули
+    implementation(project(":core"))
     implementation(project(":details"))
 
 
@@ -101,6 +102,10 @@ dependencies {
 
     // --- Навигация ---
     implementation(libs.androidx.navigation.compose)
+
+
+    // --- UI Support ---
+    implementation(libs.material)
 
 
     // --- Тестирование (Unit & UI) ---

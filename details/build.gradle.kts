@@ -55,6 +55,10 @@ android {
 dependencies {
 
 
+    // Подключаем core-модуль
+    implementation(project(":core"))
+
+
     // --- Базовые библиотеки Android и Kotlin ---
     implementation(libs.androidx.core.ktx)                                                              // Расширения Kotlin для Android Core
     implementation(libs.androidx.lifecycle.runtime.ktx)                                                 // Работа с жизненным циклом (Lifecycle)

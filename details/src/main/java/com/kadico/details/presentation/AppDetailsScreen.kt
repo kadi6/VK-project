@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kadico.core.AppNavigator
 import com.kadico.details.R
 import com.kadico.details.presentation.appdetails.AppDetailsContent
 import com.kadico.details.presentation.appdetails.AppDetailsError
@@ -30,11 +31,8 @@ import kotlinx.coroutines.flow.Flow
 
 
 
-
-
-
     /*
-        Точка входа в модуль
+        Точка входа в Feature Module
     */
 
 
@@ -42,7 +40,9 @@ import kotlinx.coroutines.flow.Flow
 
 
 @Composable
-fun AppDetailsScreen() {
+fun AppDetailsScreen(
+    navigator: AppNavigator
+) {
     val viewModel = hiltViewModel<AppDetailsViewModel>()
     val state by viewModel.state.collectAsState()
     val events = viewModel.events
@@ -102,6 +102,7 @@ fun AppDetailsScreen() {
                     onDeveloperClick = {
                         viewModel.showUnderDevelopmentMessage()
                     },
+                    navigator = navigator,
                     modifier = Modifier
                         .fillMaxSize()
                         .safeDrawingPadding()

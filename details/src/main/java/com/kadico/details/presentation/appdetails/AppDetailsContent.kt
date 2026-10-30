@@ -16,10 +16,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kadico.core.AppNavigator
 import com.kadico.details.domain.AppDetails
 import com.kadico.details.domain.Category
 import com.kadico.details.domain.SimilarApp
 import com.kadico.details.presentation.theme.VKprojectTheme
+
+
+
+
 
 
 @Composable
@@ -31,6 +36,7 @@ fun AppDetailsContent(
     onReadMoreClick: () -> Unit,
     onDeveloperClick: () -> Unit,
     onSimilarAppDownloadClick: (SimilarApp) -> Unit,
+    navigator: AppNavigator,
     modifier: Modifier = Modifier,
 ) {
     val appDetails = content.appDetails
@@ -88,8 +94,18 @@ fun AppDetailsContent(
                 .fillMaxWidth()
                 .padding(start = 16.dp),
         )
+        Spacer(Modifier.height(66.dp))
+        Showcase(
+            modifier = Modifier.padding(16.dp),
+            navigator = navigator
+        )
     }
 }
+
+
+
+
+
 
 @Preview
 @Composable
@@ -128,6 +144,7 @@ private fun Preview() {
             onInstallClick = {},
             onDeveloperClick = {},
             onSimilarAppDownloadClick = {},
+            navigator = TODO(),
             modifier = Modifier.fillMaxSize(),
         )
     }
