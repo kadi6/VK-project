@@ -58,7 +58,7 @@ dependencies {
 
     // Подключаем модули
     implementation(project(":core"))
-    implementation(project(":details"))
+    implementation(project(":feature appdetails"))
 
 
     // --- Базовые библиотеки Android и Kotlin ---
